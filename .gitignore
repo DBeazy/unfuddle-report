@@ -1,8 +1,4 @@
 .idea/
 
-# Vagrant local developments
-.vagrant
-Vagrantfile
-
 # Composer Requirements
 /vendor/
