@@ -22,7 +22,7 @@
                 {% for activity in user_report.activities if activity.ticket.number %}
                     <tr>
                         <td>{{ activity.ticket.number }}</td>
-                        <td><a href="{{ activity.ticket.link }}">{{ activity.ticket.description }}</a></td>
+                        <td><a href="{{ activity.ticket.link }}" target="_blank">{{ activity.ticket.description }}</a></td>
                         <td>{{ activity.ticket.status }}</td>
                         <td>{{ activity.ticket.assignee.first_name }}</td>
                         <td><span>{{ activity.message|raw }}</span></td>
