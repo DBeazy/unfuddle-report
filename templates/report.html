@@ -1,0 +1,22 @@
+{% extends "template.html" %}
+
+{% block title %}
+Report
+{% endblock %}
+
+{% block page_title %}
+Report
+{% endblock %}
+
+{% block content %}
+
+<p class="lead">Select the start date for the report, and then submit.</p>
+<form class="form-inline report-form">
+    <div class="input-group">
+        <input id="datetimepicker" class="form-control" type="text" value="{{ default_time ? default_time|date(default_format) : "yesterday 7:45am"|date("m/d/Y H:i") }}">
+        <span class="input-group-btn"><button type="submit" class="btn btn-primary btn-normal">Submit</button></span>
+    </div>
+</form>
+
+<div class="well left-content report-container hidden"></div>
+{% endblock %}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Unfuddle Report - {% block title %}Homepage{% endblock %}</title>
+        <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+        <!-- Bootstrap -->
+        <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <!-- Datetime Picker -->
+        <link rel="stylesheet" type="text/css" href="/css/jquery.datetimepicker.css">
+        <!-- This applications Style -->
+        <link href="/css/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <div class="header clearfix">
+                <nav>
+                    <ul class="nav nav-pills">
+                        {% if authenticated %}
+                            {% if session.options %}
+                                <li role="presentation"{% if url == "/report" %} class="active"{% endif %}><a href="/report">Activity Report</a></li>
+                            {% endif %}
+                            <li role="presentation"{% if url == "/options" %} class="active"{% endif %}><a href="/options">Report Options</a></li>
+                            <li role="presentation"><a href="/logout">Log Out</a></li>
+                        {% else %}
+                            <li role="presentation" class="active"><a href="/">Login</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            <div class="jumbotron">
+                <h1>{% block page_title %}Unfuddle Report{% endblock %}</h1>
+                <div class="inner-content">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+            <footer class="footer">
+                <p>&copy; 2013 - {{ "now"|date("Y") }} Unfuddle Report by Yojimbo Corp</p>
+            </footer>
+        </div>
+        <div class="modal"></div>
+        <!-- JQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- Bootstrap -->
+        <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+        <!-- Datetime Picker -->
+        <script src="/js/jquery.datetimepicker.full.min.js" type="application/javascript"></script>
+        <!-- This applications js -->
+        <script src="/js/application.js" type="application/javascript"></script>
+    </body>
+</html>

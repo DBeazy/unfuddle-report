@@ -1,0 +1,64 @@
+{% extends "template.html" %}
+
+{% block title %}
+Homepage
+{% endblock %}
+
+{% block page_title %}
+Unfuddle Report
+{% endblock %}
+
+{% block content %}
+
+    {% if success %}
+        <div class="alert alert-success">
+            <strong>Congrats!</strong>
+            {{ success.message }}
+        </div>
+    {% endif %}
+
+    {% if logout %}
+        <div class="alert alert-success">
+            <strong>Congrats!</strong> You have successfully logged out.
+        </div>
+    {% endif %}
+
+    {% if not authenticated %}
+        {% for error in errors %}
+            <div class="alert alert-danger">
+                <strong>Error!</strong>
+                {{ error.message }}
+            </div>
+        {% endfor %}
+
+        <div class="well">
+            <form class="form-signin" role="form" method="post" action="?submit">
+                <h2 class="form-signin-heading">Please sign in</h2>
+                <div class="left-content">
+                    <label for="inputUsername">Username</label>
+                    <div class="input-group">
+                        <span class="input-group-addon login-addon"><i class="fa fa-user"></i></span>
+                        <input type="text" id="inputUsername" class="form-control" name="username" required="" autofocus="">
+                    </div>
+                    <label for="inputPassword">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-addon login-addon"><i class="fa fa-lock"></i></span>
+                        <input type="password" id="inputPassword" class="form-control" name="password" required="">
+                    </div>
+                    <label for="inputUrl">Unfuddle Website</label>
+                    <div class="input-group">
+                        <span class="input-group-addon login-addon"><i class="fa fa-users"></i></span>
+                        <input type="text" id="inputUrl" class="form-control" placeholder="https://<project_domain>.unfuddle.com" name="unfuddle_url" required=""{{ remember_url ? ' value=' ~ remember_url : '' }}>
+                    </div>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="remember_me" value="remember-me"{{ remember_url ? ' checked="checked"' : '' }}> Remember Unfuddle Website
+                    </label>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            </form>
+        </div>
+    {% endif %}
+
+{% endblock %}

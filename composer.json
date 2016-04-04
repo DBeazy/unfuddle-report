@@ -1,0 +1,21 @@
+{
+    "name": "devinunfuddle/unfuddle-report",
+    "description": "This is a web interface for the unfuddle api, that reports activity for developers.",
+    "authors": [
+        {
+            "name": "Devin McBeth",
+            "email": "chromiem@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "~3.0",
+        "slim/twig-view": "^2.0",
+        "php-curl-class/php-curl-class": "^4.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "UnfuddleReport\\Controllers\\": "controllers/",
+            "UnfuddleReport\\Models\\": "models/"
+        }
+    }
+}
