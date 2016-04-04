@@ -1,25 +1,37 @@
-{% for user_report in report if user_report.activities%}
-    <h2>{{ user_report.user.first_name }} - Activity</h2>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <tr>
-                <th>#</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Assignee</th>
-                <th>Updates</th>
-            </tr>
-            {% for activity in user_report.activities if activity.ticket.number %}
-                <tr>
-                    <td>{{ activity.ticket.number }}</td>
-                    <td><a href="{{ activity.ticket.link }}">{{ activity.ticket.description }}</a></td>
-                    <td>{{ activity.ticket.status }}</td>
-                    <td>{{ activity.ticket.assignee.first_name }}</td>
-                    <td><span>{{ activity.message|raw }}</span></td>
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
+{% if errors in report %}
+
+    {% for error in report.errors %}
+        <div class="alert alert-danger">
+            <strong>Error!</strong>
+            {{ error.message }}
+        </div>
+    {% endfor %}
+
 {% else %}
-    <p class="lead">No reports found with the provided settings.</p>
-{% endfor %}
+    {% for user_report in report if user_report.activities%}
+        <h2>{{ user_report.user.first_name }} - Activity</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <tr>
+                    <th>#</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Assignee</th>
+                    <th>Updates</th>
+                </tr>
+                {% for activity in user_report.activities if activity.ticket.number %}
+                    <tr>
+                        <td>{{ activity.ticket.number }}</td>
+                        <td><a href="{{ activity.ticket.link }}">{{ activity.ticket.description }}</a></td>
+                        <td>{{ activity.ticket.status }}</td>
+                        <td>{{ activity.ticket.assignee.first_name }}</td>
+                        <td><span>{{ activity.message|raw }}</span></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+    {% else %}
+        <p class="lead">No reports found with the provided settings.</p>
+    {% endfor %}
+{% endif %}
