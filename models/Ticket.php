@@ -41,7 +41,7 @@ class Ticket
 
         // Set the Link
         if (!empty($api_ticket->project_id) && !empty($api_ticket->number)) {
-            $this->link = $base_url . '/#a/projects/' . $api_ticket->project_id . '/tickets/by_number/' . $api_ticket->number;
+            $this->link = $base_url . '/a#/projects/' . $api_ticket->project_id . '/tickets/by_number/' . $api_ticket->number;
         }
 
     }
