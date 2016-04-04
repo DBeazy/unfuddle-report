@@ -98,11 +98,7 @@ $app->map(['GET', 'POST'], '/options', function ($request, $response, $args) {
     // We need the User list within this endpoint
     $args['users'] = Users::getUserList();
 
-    try {
-        return $this->view->render($response, 'report-options.html', $args);
-    } catch (\Exception $e) {
-        echo $e->getMessage();
-    }
+    return $this->view->render($response, 'report-options.html', $args);
 
 })->setName('options')->add($authentication_middleware);
 
