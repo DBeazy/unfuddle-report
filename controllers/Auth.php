@@ -71,16 +71,9 @@ class Auth
                     // Set the authenticated parameter
                     $arguments['authenticated'] = true;
 
-                    // Set the remember me cookie
-                    if (!empty(self::$query_params['remember_me'])) {
+                    // Set the cookie for the user to be authenticated
+                    setcookie(self::COOKIE_NAME, self::$query_params['unfuddle_url'], time()+(60 * 60 * 24 * 30));
 
-                        // Set the cookie for the user to be authenticated
-                        setcookie(self::COOKIE_NAME, self::$query_params['unfuddle_url'], time()+(2592000));
-
-                    // Set it to an empty string to override the cookie if already set
-                    } else {
-                        setcookie(self::COOKIE_NAME, '', time()+(2592000));
-                    }
 
                 } else {
                     // Unset the session variables

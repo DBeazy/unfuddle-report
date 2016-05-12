@@ -1,5 +1,7 @@
 <?php
 
+use Slim\Http\Request;
+use Slim\Http\Response;
 use UnfuddleReport\Controllers\Auth;
 use UnfuddleReport\Controllers\Options;
 use UnfuddleReport\Controllers\Projects;
@@ -9,7 +11,7 @@ use UnfuddleReport\Controllers\Users;
 /**
  * Get Report from ajax call
  */
-$app->post('/get-report', function ($request, $response) {
+$app->post('/get-report', function (Request $request, Response $response) {
     
     // Get the report
     $report = Report::getReport($this, $request);
@@ -21,7 +23,7 @@ $app->post('/get-report', function ($request, $response) {
 /**
  * Report Page 
  */
-$app->get('/report', function ($request, $response, $args) {
+$app->get('/report', function (Request $request, Response $response, $args) {
 
     // If we reach the route then the middleware has authenticated us.
     $args['authenticated'] = true;
@@ -43,7 +45,7 @@ $app->get('/report', function ($request, $response, $args) {
 /**
  * Report Options Page
  */
-$app->map(['GET', 'POST'], '/options', function ($request, $response, $args) {
+$app->map(['GET', 'POST'], '/options', function (Request $request, Response $response, $args) {
 
     // If this is post then save the selections
     if ($request->isPost()) {
@@ -110,7 +112,7 @@ $app->map(['GET', 'POST'], '/options', function ($request, $response, $args) {
 /**
  * Logout Page
  */
-$app->get('/logout', function ($request, $response) {
+$app->get('/logout', function (Request $request, Response $response) {
     
     // Unset the session variables
     $_SESSION = array();
@@ -135,7 +137,7 @@ $app->get('/logout', function ($request, $response) {
 /**
  * Homepage/Login Page
  */
-$app->map(['GET', 'POST'], '/', function ($request, $response, $args) {
+$app->map(['GET', 'POST'], '/', function (Request $request, Response $response, $args) {
 
     // Put this through the UserController
     $logged_in = Auth::login($request, $args);
@@ -156,6 +158,15 @@ $app->map(['GET', 'POST'], '/', function ($request, $response, $args) {
     // If the cookie is set for the remember_me then we can show it in login form
     if (!empty($_COOKIE[Auth::COOKIE_NAME])) {
         $args['remember_url'] = $_COOKIE[Auth::COOKIE_NAME];
+    }
+
+    // We posted but did not fully log in, so push the post variables back to the form.
+    if ($request->isPost() && !$logged_in) {
+        $post = $request->getParsedBody();
+        $args['username'] = $post['username'];
+        if (!empty($args['remember_url']) && $post['unfuddle_url'] != $args['remember_url']) {
+            $args['remember_url'] = $post['unfuddle_url'];
+        }
     }
 
     return $this->view->render($response, 'index.html', $args);

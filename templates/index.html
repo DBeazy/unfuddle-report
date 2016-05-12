@@ -38,7 +38,7 @@ Unfuddle Report
                     <label for="inputUsername">Username</label>
                     <div class="input-group">
                         <span class="input-group-addon login-addon"><i class="fa fa-user"></i></span>
-                        <input type="text" id="inputUsername" class="form-control" name="username" required="" autofocus="">
+                        <input type="text" id="inputUsername" class="form-control" name="username" required="" autofocus=""{{ username ? ' value=' ~ username : '' }}>
                     </div>
                     <label for="inputPassword">Password</label>
                     <div class="input-group">
@@ -50,11 +50,6 @@ Unfuddle Report
                         <span class="input-group-addon login-addon"><i class="fa fa-users"></i></span>
                         <input type="text" id="inputUrl" class="form-control" placeholder="https://<project_domain>.unfuddle.com" name="unfuddle_url" required=""{{ remember_url ? ' value=' ~ remember_url : '' }}>
                     </div>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" name="remember_me" value="remember-me"{{ remember_url ? ' checked="checked"' : '' }}> Remember Unfuddle Website
-                    </label>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             </form>
