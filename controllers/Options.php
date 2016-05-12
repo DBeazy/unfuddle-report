@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class Options
 {
 
-    const SESSION_KEY = 'report_options';
+    const COOKIE_NAME = 'report_options';
     
     private $projects;
     private $users;
@@ -53,10 +53,12 @@ class Options
     {
         // Check that it is valid
         if ($this->validate()) {
-            $_SESSION[self::SESSION_KEY] = json_encode(array(
+
+            // Set the cookie for the user to be authenticated
+            setcookie(self::COOKIE_NAME, json_encode(array(
                 'projects' => $this->projects,
                 'users' => $this->users
-            ));
+            )), time()+(60 * 60 * 24 * 30));
             return true;
         }
         return false;
@@ -69,8 +71,8 @@ class Options
      */
     public static function get()
     {
-        if (!empty($_SESSION[self::SESSION_KEY])) {
-            return json_decode($_SESSION[self::SESSION_KEY], true);
+        if (!empty($_COOKIE[self::COOKIE_NAME])) {
+            return json_decode($_COOKIE[self::COOKIE_NAME], true);
         }
         return false;
     }

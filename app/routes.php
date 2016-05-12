@@ -124,6 +124,15 @@ $app->get('/logout', function (Request $request, Response $response) {
             $params["path"], $params["domain"],
             $params["secure"], $params["httponly"]
         );
+        $_COOKIE[session_name()] = null;
+        unset($_COOKIE[session_name()]);
+    }
+    
+    // Delete Options cookie
+    if (!empty($_COOKIE[Options::COOKIE_NAME])) {
+        setcookie(Options::COOKIE_NAME, '', time() - 42000);
+        $_COOKIE[Options::COOKIE_NAME] = null;
+        unset($_COOKIE[Options::COOKIE_NAME]);
     }
     
     // Destroy the session now
