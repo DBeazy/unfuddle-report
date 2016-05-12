@@ -143,3 +143,6 @@ body.loading .modal {
 body {
 
 }
+.form-signin .left-content {
+    margin-bottom: 15px;
+}
