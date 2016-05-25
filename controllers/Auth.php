@@ -10,7 +10,7 @@ class Auth
     const SESSION_PASS_KEY = 'user_pass';
     const SESSION_URL_KEY = 'user_url';
 
-    const COOKIE_NAME = 'last_used_url';
+    const URL_COOKIE_NAME = 'last_used_url';
 
     private static $query_params;
     private static $login_required = array(
@@ -72,7 +72,7 @@ class Auth
                     $arguments['authenticated'] = true;
 
                     // Set the cookie for the user to be authenticated
-                    setcookie(self::COOKIE_NAME, self::$query_params['unfuddle_url'], time()+(60 * 60 * 24 * 30));
+                    setcookie(self::URL_COOKIE_NAME, self::$query_params['unfuddle_url'], time()+(60 * 60 * 24 * 30));
 
 
                 } else {

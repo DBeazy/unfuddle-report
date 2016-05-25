@@ -34,6 +34,12 @@ $authentication_middleware = function ($request, $response, $next) {
         exit;
     }
 
+    // If we logged in correctly then came back then we can automatically redirect to the options page.
+    if ($request->getUri()->getPath() === '/' && $logged_in) {
+        header('Location: /options');
+        exit;
+    }
+
     // Call next in middleware
     $response = $next($request, $response);
 

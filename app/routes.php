@@ -165,8 +165,8 @@ $app->map(['GET', 'POST'], '/', function (Request $request, Response $response, 
     }
     
     // If the cookie is set for the remember_me then we can show it in login form
-    if (!empty($_COOKIE[Auth::COOKIE_NAME])) {
-        $args['remember_url'] = $_COOKIE[Auth::COOKIE_NAME];
+    if (!empty($_COOKIE[Auth::URL_COOKIE_NAME])) {
+        $args['remember_url'] = $_COOKIE[Auth::URL_COOKIE_NAME];
     }
 
     // We posted but did not fully log in, so push the post variables back to the form.
