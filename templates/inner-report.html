@@ -8,6 +8,20 @@
     {% endfor %}
 
 {% else %}
+    {% if focus_report %}
+        <h3>Focus</h3>
+        {% for focus_project in focus_report %}
+            <h4>{{ focus_project.name }}</h4>
+            <ul>
+            {% for focus_ticket in focus_project.tickets if focus_ticket.link %}
+                <li>({{ focus_ticket.status }}) <a href="{{ focus_ticket.link }}">{{ focus_ticket.summary }}</a></li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p class="lead">No reports found with the provided settings.</p>
+        {% endfor %}
+    {% endif %}
+
     {% for user_report in report if user_report.activities%}
         <h2>{{ user_report.user.first_name }} - Activity</h2>
         <div class="table-responsive">

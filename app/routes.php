@@ -16,7 +16,10 @@ $app->post('/get-report', function (Request $request, Response $response) {
     // Get the report
     $report = Report::getReport($this, $request);
 
-    return $this->view->render($response, 'inner-report.html', ['report' => $report]);
+    // Get the focus report
+    $focus_report = Report::getFocusReport($this);
+
+    return $this->view->render($response, 'inner-report.html', ['report' => $report, 'focus_report' => $focus_report]);
 
 })->add($authentication_middleware);
 
