@@ -16,6 +16,7 @@ class ReportTicket
     public $summary;
     public $status;
     public $link;
+    public $assignee;
     
     /**
      * User constructor.
@@ -39,6 +40,11 @@ class ReportTicket
         // Set the Status
         if (!empty($api_ticket->status)) {
             $this->status = $api_ticket->status;
+        }
+
+        // Set the Assignee
+        if (!empty($api_ticket->assignee_id)) {
+            $this->assignee = $api_ticket->assignee_id;
         }
 
         // Set the Link

@@ -11,13 +11,16 @@ namespace UnfuddleReport\Controllers;
 use UnfuddleReport\Models\ReportTicket as TicketModel;
 
 
-class TicketReport extends api
+class TicketReport extends Api
 {
 
     // Tickets Report Endpoint
-    const TICKET_REPORT_ENDPOINT = '/api/v1/projects/<project_id>/ticket_reports/dynamic.json?fields-string=number,status,summary&sort-by=status';
+    const TICKET_REPORT_ENDPOINT = '/api/v1/projects/<project_id>/ticket_reports/dynamic.json?fields-string=number,status,summary,assignee&sort-by=status';
 
-    private static $conditions = 'conditions-string=status-eq-In+Progress|status-eq-Code+Complete|status-eq-Code+Review|status-eq-Needs+Feedback|status-eq-ReOpened';
+    private static $conditions = 'conditions-string=status-eq-In+Progress|status-eq-Code+Complete|status-eq-Code+Review|status-eq-ReOpened';
+    
+    private static $projects;
+    private static $users;
 
     /**
      * Retrieve the Ticket Report from api
@@ -29,12 +32,20 @@ class TicketReport extends api
 
         // Initiate a project list
         $tickets = array();
+        
+        // Get the options
+        if (!static::loadOptions()) {
+            return ['errors' => ['message' => 'The report options were not set properly.']];
+        }
 
         // Get the projects
         $projects = Projects::getProjectList();
 
         try {
             foreach ($projects as $project) {
+
+                // Skip if the project is not in the request settings.
+                if (!in_array($project->id, self::$projects)) continue;
 
                 // Set the project id in tickets as an array
                 $tickets[$project->id] = array(
@@ -58,6 +69,9 @@ class TicketReport extends api
 
                     foreach ($ticket_report->groups[0]->tickets as $ticket) {
 
+                        // Skip if not assigned to someone in report options
+                        if (!in_array($ticket->assignee_id, self::$users)) continue;
+
                         // Get a Ticket Model from api
                         $tickets[$project->id]['tickets'][] = new TicketModel(static::getBaseUrl(), $project->id, $ticket);
                     }
@@ -72,6 +86,24 @@ class TicketReport extends api
 
         // Return the array
         return $tickets;
+    }
+    
+    /**
+     * Get the Report options.
+     * @return bool
+     */
+    private static function loadOptions()
+    {
+        // Get the options from session
+        $options = Options::get();
+
+        if (!empty($options)) {
+            // Set the args
+            static::$users = $options['users'];
+            static::$projects = $options['projects'];
+            return true;
+        }
+        return false;
     }
 
 }

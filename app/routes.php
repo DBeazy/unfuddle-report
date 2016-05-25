@@ -6,6 +6,7 @@ use UnfuddleReport\Controllers\Auth;
 use UnfuddleReport\Controllers\Options;
 use UnfuddleReport\Controllers\Projects;
 use UnfuddleReport\Controllers\Report;
+use UnfuddleReport\Controllers\TicketReport;
 use UnfuddleReport\Controllers\Users;
 
 /**
@@ -17,7 +18,7 @@ $app->post('/get-report', function (Request $request, Response $response) {
     $report = Report::getReport($this, $request);
 
     // Get the focus report
-    $focus_report = Report::getFocusReport($this);
+    $focus_report = TicketReport::getReport();
 
     return $this->view->render($response, 'inner-report.html', ['report' => $report, 'focus_report' => $focus_report]);
 

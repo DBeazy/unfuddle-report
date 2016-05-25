@@ -85,21 +85,6 @@ class Report
     }
 
     /**
-     * Get the focus report from the api.
-     * 
-     * @return array
-     */
-    public static function getFocusReport()
-    {
-        
-        // Get the activity reports
-        $ticket_reports = TicketReport::getReport();
-
-        return $ticket_reports;
-
-    }
-
-    /**
      * Get the Report options.
      * @return bool
      */
