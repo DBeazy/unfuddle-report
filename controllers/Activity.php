@@ -106,10 +106,10 @@ class Activity extends Api
         } else if ($activity->record_type === 'TimeEntry') {
 
                 // Set the ticket number from the activity
-                $activity->record->ticket_entry->ticket_number = $activity->ticket_number;
+                $activity->record->time_entry->ticket_number = $activity->ticket_number;
 
                 // Return a comment object
-                return new TimeEntry($pj_id, $activity->person_id, $activity->record->ticket_entry);
+                return new TimeEntry($pj_id, $activity->person_id, $activity->record->time_entry);
 
         } else {
             
