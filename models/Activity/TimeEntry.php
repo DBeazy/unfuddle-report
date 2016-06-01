@@ -30,7 +30,7 @@ class TimeEntry extends Activity
         $this->ticket = $this->getParentTicket();
 
         // Set the message
-        $this->message = '<strong>[' . date('m/d/Y', strtotime($time_entry->created_at)) . ']:</strong> (' . $time_entry->hours . 'Hrs) ' . htmlentities($time_entry->description);
+        $this->message = '<strong>[' . date('m/d/Y', strtotime($time_entry->created_at)) . ']:</strong> (' . $time_entry->hours . ' Hrs) ' . htmlentities($time_entry->description);
 
     }
 
