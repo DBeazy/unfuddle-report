@@ -2,9 +2,9 @@
 
 namespace UnfuddleReport\Controllers;
 
-
-use UnfuddleReport\Models\Changeset;
-use UnfuddleReport\Models\Comment;
+use UnfuddleReport\Models\Activity\Changeset;
+use UnfuddleReport\Models\Activity\Comment;
+use UnfuddleReport\Models\Activity\TimeEntry;
 
 class Activity extends Api
 {
@@ -79,7 +79,7 @@ class Activity extends Api
     {
 
         // Only save Comment and Changeset
-        if (!in_array($activity->record_type, array('Comment', 'Changeset'))) {
+        if (!in_array($activity->record_type, array('Comment', 'Changeset', 'TimeEntry'))) {
             return false;
         }
 
@@ -96,13 +96,21 @@ class Activity extends Api
         
         // Set as a new Comment Model
         if ($activity->record_type === 'Comment') {
-            
+
             // Set the ticket number from the activity
             $activity->record->comment->ticket_number = $activity->ticket_number;
-            
+
             // Return a comment object
             return new Comment($pj_id, $activity->person_id, $activity->record->comment);
-            
+
+        } else if ($activity->record_type === 'TimeEntry') {
+
+                // Set the ticket number from the activity
+                $activity->record->ticket_entry->ticket_number = $activity->ticket_number;
+
+                // Return a comment object
+                return new TimeEntry($pj_id, $activity->person_id, $activity->record->ticket_entry);
+
         } else {
             
             // Return a Changeset object

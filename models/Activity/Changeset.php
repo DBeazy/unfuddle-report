@@ -1,6 +1,8 @@
 <?php
 
-namespace UnfuddleReport\Models;
+namespace UnfuddleReport\Models\Activity;
+
+use UnfuddleReport\Models\Activity;
 
 
 class Changeset extends Activity
