@@ -126,8 +126,6 @@ class Auth
      */
     private static function verifyUser()
     {
-        var_dump($_COOKIE);
-
         // Set the Base Url, Username and Password
         Api::setBaseUrl($_COOKIE[self::COOKIE_URL_KEY]);
         Api::setUsername($_COOKIE[self::COOKIE_AUTH_KEY]);
