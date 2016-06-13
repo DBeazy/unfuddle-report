@@ -14,7 +14,7 @@
             <h4>{{ focus_project.name }}</h4>
             <ul>
             {% for focus_ticket in focus_project.tickets if focus_ticket.link %}
-                <li>({{ focus_ticket.status }}) <a href="{{ focus_ticket.link }}">{{ focus_ticket.summary }}</a></li>
+                <li>({{ focus_ticket.status }}) {{ focus_ticket.summary }} <a href="{{ focus_ticket.link }}" target="_blank">[{{ focus_ticket.number }}]</a></li>
             {% endfor %}
             </ul>
         {% else %}
