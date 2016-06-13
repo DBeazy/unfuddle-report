@@ -120,24 +120,9 @@ $app->get('/logout', function (Request $request, Response $response) {
     
     // Unset the session variables
     $_SESSION = array();
-    
-    // If we are using session cookies then delete that as well
-    if (ini_get("session.use_cookies")) {
-        $params = session_get_cookie_params();
-        setcookie(session_name(), '', time() - 42000,
-            $params["path"], $params["domain"],
-            $params["secure"], $params["httponly"]
-        );
-        $_COOKIE[session_name()] = null;
-        unset($_COOKIE[session_name()]);
-    }
-    
-    // Delete Options cookie
-    if (!empty($_COOKIE[Options::COOKIE_NAME])) {
-        setcookie(Options::COOKIE_NAME, '', time() - 42000);
-        $_COOKIE[Options::COOKIE_NAME] = null;
-        unset($_COOKIE[Options::COOKIE_NAME]);
-    }
+
+    // Unset the Auth User
+    Auth::logout();
     
     // Destroy the session now
     session_destroy();

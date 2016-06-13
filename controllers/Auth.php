@@ -6,9 +6,9 @@ use \Psr\Http\Message\ServerRequestInterface as request;
 class Auth
 {
 
-    const SESSION_AUTH_KEY = 'user_auth';
-    const SESSION_PASS_KEY = 'user_pass';
-    const SESSION_URL_KEY = 'user_url';
+    const COOKIE_AUTH_KEY = 'user_auth';
+    const COOKIE_PASS_KEY = 'user_pass';
+    const COOKIE_URL_KEY = 'user_url';
 
     const URL_COOKIE_NAME = 'last_used_url';
 
@@ -27,7 +27,7 @@ class Auth
     {
 
         // Check if the session variable is not empty
-        if (!empty($_SESSION[static::SESSION_AUTH_KEY])) {
+        if (!empty($_COOKIE[static::COOKIE_AUTH_KEY])) {
             return static::verifyUser();
         }
         
@@ -57,10 +57,10 @@ class Auth
             // All required fields are set.
             if (self::check_post(self::$query_params)) {
 
-                // Set the session items
-                $_SESSION[self::SESSION_AUTH_KEY] = self::$query_params['username'];
-                $_SESSION[self::SESSION_PASS_KEY] = self::$query_params['password'];
-                $_SESSION[self::SESSION_URL_KEY] = self::$query_params['unfuddle_url'];
+                // Set the cookie for the user to be authenticated
+                setcookie(self::COOKIE_AUTH_KEY, self::$query_params['username'], time()+(60 * 60 * 24 * 15));
+                setcookie(self::COOKIE_PASS_KEY, self::$query_params['password'], time()+(60 * 60 * 24 * 15));
+                setcookie(self::COOKIE_URL_KEY, self::$query_params['unfuddle_url'], time()+(60 * 60 * 24 * 15));
 
                 // Verify the user with the recently set session variables.
                 if (self::verifyUser()) {
@@ -77,9 +77,9 @@ class Auth
 
                 } else {
                     // Unset the session variables
-                    $_SESSION[self::SESSION_AUTH_KEY] = null;
-                    $_SESSION[self::SESSION_PASS_KEY] = null;
-                    $_SESSION[self::SESSION_URL_KEY] = null;
+                    setcookie(self::COOKIE_AUTH_KEY,'', time() - 3600);
+                    setcookie(self::COOKIE_PASS_KEY, '', time() - 3600);
+                    setcookie(self::COOKIE_URL_KEY, '', time() - 3600);
 
                     // Set the error
                     $arguments['errors'][] = ['message' => 'The provided login credentials were incorrect, please try again.'];
@@ -94,6 +94,27 @@ class Auth
         // Return true or false
         return !empty($arguments['authenticated']);
     }
+    
+    /** 
+     * Logout the user by un-setting their cookie data. 
+     */
+    public static function logout ()
+    {
+
+        // Unset the session variables
+        setcookie(self::COOKIE_AUTH_KEY,'', time() - 3600);
+        setcookie(self::COOKIE_PASS_KEY, '', time() - 3600);
+        setcookie(self::COOKIE_URL_KEY, '', time() - 3600);
+
+        $_COOKIE[self::COOKIE_AUTH_KEY] = null;
+        $_COOKIE[self::COOKIE_PASS_KEY] = null;
+        $_COOKIE[self::COOKIE_URL_KEY] = null;
+        unset($_COOKIE[self::COOKIE_AUTH_KEY]);
+        unset($_COOKIE[self::COOKIE_PASS_KEY]);
+        unset($_COOKIE[self::COOKIE_URL_KEY]);
+        
+        return true;
+    }
 
     /**
      * Verify the user using session
@@ -103,9 +124,9 @@ class Auth
     private static function verifyUser()
     {
         // Set the Base Url, Username and Password
-        Api::setBaseUrl($_SESSION[self::SESSION_URL_KEY]);
-        Api::setUsername($_SESSION[self::SESSION_AUTH_KEY]);
-        Api::setPassword($_SESSION[self::SESSION_PASS_KEY]);
+        Api::setBaseUrl($_COOKIE[self::COOKIE_URL_KEY]);
+        Api::setUsername($_COOKIE[self::COOKIE_AUTH_KEY]);
+        Api::setPassword($_COOKIE[self::COOKIE_PASS_KEY]);
 
         // With the required parameters set, return the project list
         return !empty(Projects::getProjectList());
