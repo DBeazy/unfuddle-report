@@ -61,6 +61,9 @@ class Auth
                 setcookie(self::COOKIE_AUTH_KEY, self::$query_params['username'], time()+(60 * 60 * 24 * 15));
                 setcookie(self::COOKIE_PASS_KEY, self::$query_params['password'], time()+(60 * 60 * 24 * 15));
                 setcookie(self::COOKIE_URL_KEY, self::$query_params['unfuddle_url'], time()+(60 * 60 * 24 * 15));
+                $_COOKIE[self::COOKIE_AUTH_KEY] = self::$query_params['username'];
+                $_COOKIE[self::COOKIE_PASS_KEY] = self::$query_params['password'];
+                $_COOKIE[self::COOKIE_URL_KEY] = self::$query_params['unfuddle_url'];
 
                 // Verify the user with the recently set session variables.
                 if (self::verifyUser()) {
@@ -123,6 +126,8 @@ class Auth
      */
     private static function verifyUser()
     {
+        var_dump($_COOKIE);
+
         // Set the Base Url, Username and Password
         Api::setBaseUrl($_COOKIE[self::COOKIE_URL_KEY]);
         Api::setUsername($_COOKIE[self::COOKIE_AUTH_KEY]);
