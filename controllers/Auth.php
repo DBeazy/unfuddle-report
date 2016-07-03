@@ -154,4 +154,15 @@ class Auth
         return true;
     }
 
+    /**
+     * Refresh the cookies that store the authentication so that we don't need to keep logging in every 15 days
+     *
+     */
+    public static function refresh()
+    {
+        setcookie(self::COOKIE_AUTH_KEY, $_COOKIE[self::COOKIE_AUTH_KEY], time()+(60 * 60 * 24 * 15));
+        setcookie(self::COOKIE_PASS_KEY, $_COOKIE[self::COOKIE_PASS_KEY], time()+(60 * 60 * 24 * 15));
+        setcookie(self::COOKIE_URL_KEY, $_COOKIE[self::COOKIE_URL_KEY], time()+(60 * 60 * 24 * 15));
+    }
+
 }

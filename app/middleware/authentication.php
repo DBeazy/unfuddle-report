@@ -26,6 +26,8 @@ $authentication_middleware = function ($request, $response, $next) {
 
         // Save the user in the DIC
         $this['auth_user'] = $user;
+
+        Auth::refresh();
     }
 
     // Redirect if not logged in and on a page other than /
