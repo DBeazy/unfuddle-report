@@ -42,7 +42,7 @@ class Ticket extends Api
                     // Get a Ticket Model from api
                     $ticket = new TicketModel(static::getBaseUrl(), $user, $ticket_api);
                 } else {
-                    throw new \Exception('Failed to get the returned user.');
+                    throw new \Exception(sprintf('Failed to get the returned user for project %1$s, ticket %2$s.', $project_id, $ticket_number));
                 }
 
             }
