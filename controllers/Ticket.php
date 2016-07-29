@@ -3,6 +3,7 @@
 namespace UnfuddleReport\Controllers;
 
 use UnfuddleReport\Models\Ticket as TicketModel;
+use UnfuddleReport\Models\User;
 
 class Ticket extends Api
 {
@@ -37,8 +38,12 @@ class Ticket extends Api
                 // Get the user from the id on the ticket
                 $user = Users::getUser($ticket_api->assignee_id);
 
-                // Get a Ticket Model from api
-                $ticket = new TicketModel(static::getBaseUrl(), $user, $ticket_api);
+                if ($user INSTANCEOF User) {
+                    // Get a Ticket Model from api
+                    $ticket = new TicketModel(static::getBaseUrl(), $user, $ticket_api);
+                } else {
+                    throw new \Exception('Failed to get the returned user.');
+                }
 
             }
 
